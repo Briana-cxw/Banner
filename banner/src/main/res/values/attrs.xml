@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="Banner">
+        <attr name="pLeft" format="dimension" />
+        <attr name="pRight" format="dimension" />
+        <attr name="pTop" format="dimension" />
+        <attr name="pBottom" format="dimension" />
+        <attr name="pHorizontal" format="dimension" />
+        <attr name="pVertical" format="dimension" />
+
+        <attr name="bannerType" format="enum">
+            <enum name="big_small" value="0" />
+            <enum name="alpha" value="1" />
+        </attr>
+
+        <attr name="indicatorFillColor" format="color" />
+        <attr name="indicatorStrokeColor" format="color" />
+        <attr name="indicator_size" format="dimension" />
+        <attr name="indicator_margin" format="dimension" />
+        <attr name="scroll_interval" format="integer" />
+    </declare-styleable>
+
+
+</resources>
