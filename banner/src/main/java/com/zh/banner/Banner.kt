@@ -57,6 +57,7 @@ class Banner @JvmOverloads constructor(
 
     init {
         clipToPadding = false
+        clipChildren = false
         context.obtainStyledAttributes(attrs, R.styleable.Banner).also {
             transferMode = createPageTransfer(it.getInt(R.styleable.Banner_bannerType, BIG_SMALL))
 
@@ -172,7 +173,7 @@ class Banner @JvmOverloads constructor(
                     stroke = indicatorStrokeColor,
                     size = indicatorSize.toInt()
                 )
-            if (it == 0) {
+            if (it == currentIndex - 1) {
                 circle.isFill = true
             }
             indicatorContainer.addView(
@@ -192,6 +193,8 @@ class Banner @JvmOverloads constructor(
                 LayoutParams.WRAP_CONTENT,
             ).also {
                 it.bottomToBottom = R.id.parent
+                it.startToStart = R.id.parent
+                it.endToEnd = R.id.parent
             }
         )
     }
@@ -201,6 +204,7 @@ class Banner @JvmOverloads constructor(
 
     private class BigSmall : ViewPager2.PageTransformer {
         override fun transformPage(page: View, position: Float) {
+            //这个判断是对所有不是当前页的进行处理，当前页：viewpager2.getCurrentItem获取的下标
             if (position < -1 || position > 1) {
                 page.alpha = 0.5f
                 page.scaleX = 0.8f
@@ -208,14 +212,14 @@ class Banner @JvmOverloads constructor(
                 return
             }
 
+            //处理左边的
             if (position <= 0) {
                 page.alpha =
                     0.5f + 0.5f * (1 + position)
-            } else {
+            } else { // 处理右边
                 page.alpha =
                     0.5f + 0.5f * (1 - position)
             }
-            //缩放效果
             val scale = 0.8f.coerceAtLeast(1 - abs(position))
             page.scaleX = scale
             page.scaleY = scale
@@ -227,7 +231,6 @@ class Banner @JvmOverloads constructor(
             val pageWidth: Int = page.width
             val transX = if (position > 0) -pageWidth * position else pageWidth * position
             page.translationX = transX
-
             page.translationZ = -position
             if (position > 1 || position < -1) {
                 page.alpha = 0f
